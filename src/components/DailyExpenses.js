@@ -17,7 +17,7 @@ const DailyExpenses = () => {
         display: "flex",
         justifyContent: "space-around",
         width: "100%",
-        border: "1px solid black",
+       
       }}
     >
       {daily.length > 0 &&

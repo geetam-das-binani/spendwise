@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   all: [],
   daily: [],
-  credit: [],
+
   history: [],
 };
 export const expenseReducer = createSlice({
@@ -31,8 +31,24 @@ export const expenseReducer = createSlice({
       );
       state.history = [...state.history, action.payload];
     },
+    editExpense: (state, action) => {
+      state.daily = state.daily.map((exp) =>
+        exp.id === action.payload.id ? action.payload : exp
+      );
+      state.all = state.daily.map((exp) =>
+        exp.id === action.payload.id ? action.payload : exp
+      );
+    },
+    creditExpense: (state, action) => {
+      state.history = [...state.history, action.payload];
+    },
   },
 });
 
-export const { addExpense, moveToHistory, deleteExpense } =
-  expenseReducer.actions;
+export const {
+  addExpense,
+  moveToHistory,
+  deleteExpense,
+  editExpense,
+  creditExpense,
+} = expenseReducer.actions;

@@ -25,6 +25,13 @@ const Categories = () => {
         >
           {name}
         </Heading>
+        <Box
+        padding="1rem"
+        display="flex"
+        flexWrap="wrap"
+        gap="10px"
+        >
+
         {all?.length > 0 &&
         all?.filter(exp=>exp.category===name)?.map((expense) => (
           <Card key={expense.id} width="15vmax">
@@ -42,6 +49,7 @@ const Categories = () => {
             </CardBody>
           </Card>
         ))}
+        </Box>
       </Box>
     </Box>
   );
