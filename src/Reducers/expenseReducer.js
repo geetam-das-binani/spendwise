@@ -1,41 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  all: [],
-  daily: [],
+  allExpenses: localStorage.getItem("allDailyExpenses")
+    ? JSON.parse(localStorage.getItem("allDailyExpenses"))
+    : [],
+  dailyExpenses: localStorage.getItem("allDailyExpenses")
+    ? JSON.parse(localStorage.getItem("allDailyExpenses"))
+    : [],
 
-  history: [],
+  history: localStorage.getItem("history")
+    ? JSON.parse(localStorage.getItem("history"))
+    : [],
 };
 export const expenseReducer = createSlice({
   name: "expenses",
   initialState,
   reducers: {
     addExpense: (state, action) => {
-      state.daily = [...state.daily, action.payload];
-      state.all = [...state.all, action.payload];
+      state.dailyExpenses = [...state.dailyExpenses, action.payload];
+      state.allExpenses = [...state.allExpenses, action.payload];
     },
     deleteExpense: (state, action) => {
-      state.daily = state.daily.filter(
+      state.dailyExpenses = state.dailyExpenses.filter(
         (expense) => expense.id !== action.payload.id
       );
-      state.all = state.all.filter(
+      state.allExpenses = state.allExpenses.filter(
         (expense) => expense.id !== action.payload.id
       );
     },
     moveToHistory: (state, action) => {
-      state.daily = state.daily.filter(
+      state.dailyExpenses = state.dailyExpenses.filter(
         (expense) => expense.id !== action.payload.id
       );
-      state.all = state.all.filter(
+      state.allExpenses = state.allExpenses.filter(
         (expense) => expense.id !== action.payload.id
       );
       state.history = [...state.history, action.payload];
     },
     editExpense: (state, action) => {
-      state.daily = state.daily.map((exp) =>
+      state.dailyExpenses = state.dailyExpenses.map((exp) =>
         exp.id === action.payload.id ? action.payload : exp
       );
-      state.all = state.daily.map((exp) =>
+      state.allExpenses = state.allExpenses.map((exp) =>
         exp.id === action.payload.id ? action.payload : exp
       );
     },

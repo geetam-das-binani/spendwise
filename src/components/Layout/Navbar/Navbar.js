@@ -1,4 +1,4 @@
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Icon, useDisclosure } from "@chakra-ui/react";
 import React, { Fragment, useRef, useState } from "react";
 import { Text } from "@chakra-ui/react";
 import { Stack } from "@chakra-ui/react";
@@ -11,10 +11,12 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import { formattedCreditDate, formattedDate } from "../../../utils/utils";
 import { FormControl, Input, Select } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { addExpense, creditExpense } from "../Reducers/expenseReducer";
+import { addExpense, creditExpense } from "../../../Reducers/expenseReducer";
+import toast, { Toaster } from "react-hot-toast";
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -26,48 +28,9 @@ const Navbar = () => {
   const [date, setDate] = useState("");
   const dispatch = useDispatch();
 
-  const formattedDate = () => {
-    const date = new Date();
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
+ 
 
-    return `${month} ${day}`;
-  };
 
-  const formattedCreditDate = () => {
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const [_, month, day] = date.split("-");
-    return `${
-      monthNames[Number(month.toString().replace("0", "")) - 1]
-    } ${day} `;
-  };
   const handleAddExpense = () => {
     if (!amount || !name || !category) {
       alert("All fields are required");
@@ -82,6 +45,14 @@ const Navbar = () => {
       year: new Date().getFullYear(),
     };
     dispatch(addExpense(newExpense));
+    toast('Expense added successfully',  {
+      icon: '👏',
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    })
     onClose();
     setAmount("");
     setName("");
@@ -97,10 +68,18 @@ const Navbar = () => {
       id: uuidv4(),
       name,
       amount:Number(amount),
-      date: formattedCreditDate(),
+      date: formattedCreditDate(date),
       year: date.split("-")[0],
     };
    dispatch(creditExpense(creditDetails))
+   toast('Credit added successfully',  {
+    icon: '👏',
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  })
     onClose();
     setCreditModal(!creditModal);
     setName("")
@@ -119,7 +98,11 @@ const Navbar = () => {
         borderWidth="5px"
         justifyContent="space-between"
       >
-        <Text d={{ base: "none", md: "flex" }} px="4">
+        <Text d={{ base: "none", md: "flex" }} 
+        
+        color="rgba(96,129,232,1)"
+        fontWeight={"bold"}
+        px="4">
           SpendWise
         </Text>
 
@@ -245,6 +228,9 @@ const Navbar = () => {
         </ModalContent>
       </Modal>
       <></>
+      <Toaster
+        
+      />
     </Fragment>
   );
 };

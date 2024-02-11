@@ -1,23 +1,32 @@
-import React from 'react'
-import { BrowserRouter,Routes,Route } from 'react-router-dom'
-import Dashboard from './components/Dashboard.js'
-import Categories from './components/Categories.js'
-import Expenses from './components/Expenses.js'
-import MyStats from './components/MyStats.js'
-import Navbar from './components/Navbar.js'
-const App = () => {
-  return (
-  <BrowserRouter>
-  <Navbar />
-  <Routes>
-    <Route path="/" element={<Dashboard />} />
-    <Route path="/category/:name" element={<Categories />} />
-    <Route path="/expenses" element={<Expenses />} />
-    <Route path="/stats" element={<MyStats />} />
-  </Routes>
-  
-  </BrowserRouter>
-  )
-}
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import Categories from "./components/Categories";
+import Expenses from "./components/Expenses";
+import MyStats from "./components/MyStats";
+import Navbar from "./components/Layout/Navbar/Navbar";
+import { useSelector } from "react-redux";
 
-export default App
+const App = () => {
+  const { allExpenses, history } = useSelector((state) => state.expenses);
+  const { goals } = useSelector((state) => state.goals);
+  useEffect(() => {
+    localStorage.setItem("allDailyExpenses", JSON.stringify(allExpenses));
+    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem("goals", JSON.stringify(goals));
+  }, [allExpenses, history, goals]);
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/category/:name" element={<Categories />} />
+        <Route path="/expenses" element={<Expenses />} />
+        <Route path="/stats" element={<MyStats />} />
+      </Routes>
+     
+    </BrowserRouter>
+  );
+};
+
+export default App;

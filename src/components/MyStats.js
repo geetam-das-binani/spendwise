@@ -1,17 +1,45 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Box, HStack, Heading, Input, Text ,Button,FormControl} from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import {
+  Box,
+  HStack,
+  Heading,
+  Input,
+  Text,
+  Button,
+  FormControl,
+} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 import MyGoals from "./MyGoals";
+import { addGoal } from "../Reducers/goalsReducer";
+import { v4 as uuidv4 } from "uuid";
+import toast, { Toaster } from "react-hot-toast";
 const MyStats = () => {
-  const { all, history } = useSelector((state) => state.expenses);
-  const { goals } = useSelector((state) => state.goals);
- const [goal,setGoal]=useState("")
-  const totalExpensesAmount = all?.reduce((acc, iter) => acc + iter.amount, 0);
+  const { allExpenses, history } = useSelector((state) => state.expenses);
+  const dispatch = useDispatch();
+
+  const [goal, setGoal] = useState("");
+  const totalExpensesAmount = allExpenses?.reduce(
+    (acc, iter) => acc + iter.amount,
+    0
+  );
   const totalCreditAmount = history
     ?.filter((credit) => !credit?.category)
     .reduce((acc, iter) => acc + iter.amount, 0);
 
+  const handleAddGoal = () => {
+    if (!goal.trim()) return;
+    dispatch(addGoal({ id: uuidv4(), goal }));
+    toast("Added goal", {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+    setGoal("");
+  };
   return (
     <Box display="flex" padding="1rem">
       <Box height="45%" flex="0.2">
@@ -37,23 +65,32 @@ const MyStats = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text>Total Expenses - ${totalExpensesAmount || 0}</Text>
-          <Text>Total Credit -${totalCreditAmount || 0}</Text>
+          <Text fontWeight="bold" color="red">
+            Total Expenses - ${totalExpensesAmount || 0}
+          </Text>
+          <Text color="green" fontWeight="bold">
+            Total Credit -${totalCreditAmount || 0}
+          </Text>
         </HStack>
-        <HStack
-        marginTop=".5rem"
-        spacing="24px">
-        <FormControl>
-              <Input
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
-                placeholder="Your Goal.. "
-              />
-            </FormControl>
-            <Button variant="solid" colorScheme="green">Add Goal</Button>
+        <HStack marginTop=".5rem" spacing="24px">
+          <FormControl>
+            <Input
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              placeholder="Your Goal.. "
+            />
+          </FormControl>
+          <Button
+            variant="solid"
+            colorScheme="green"
+            onClick={handleAddGoal}
+          >
+            Add Goal
+          </Button>
         </HStack>
         <MyGoals />
       </Box>
+      <Toaster />
     </Box>
   );
 };

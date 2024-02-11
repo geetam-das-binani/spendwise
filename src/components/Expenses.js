@@ -24,44 +24,29 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteExpense, editExpense, moveToHistory } from "../Reducers/expenseReducer";
-
+import {
+  deleteExpense,
+  editExpense,
+  moveToHistory,
+} from "../Reducers/expenseReducer";
+import { formattedDate } from "../utils/utils";
+import { SmallCloseIcon } from "@chakra-ui/icons";
+import toast, { Toaster } from "react-hot-toast";
 const Expenses = () => {
-  const { all } = useSelector((state) => state.expenses);
+  const { allExpenses } = useSelector((state) => state.expenses);
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [editExpenseId,setEditExpenseId] = useState("");
-  const formattedDate = () => {
-    const date = new Date();
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
-
-    return `${month} ${day}`;
-  };
+  const [editExpenseId, setEditExpenseId] = useState("");
 
   const handleEditModal = (expense) => {
     onOpen();
     setName(expense.name);
     setAmount(expense.amount);
     setCategory(expense.category);
-    setEditExpenseId(expense.id)
+    setEditExpenseId(expense.id);
   };
 
   const handleEditExpense = () => {
@@ -77,26 +62,29 @@ const Expenses = () => {
       date: formattedDate(),
       year: new Date().getFullYear(),
     };
-  
+
     dispatch(editExpense(editedExpense));
+    toast('Edited successfully',  {
+      icon: '👏',
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    })
     setAmount("");
     setName("");
     setCategory("");
     onClose();
-    setEditExpenseId("")
+    setEditExpenseId("");
   };
-  console.log(all)
+
   return (
     <Box height="100vh" display="flex" width="100%" padding="1rem">
-      <Box
-        flex="0.2"
-        height="48%"
-        padding=".5rem"
-        borderRight="1px solid black"
-      >
+      <Box flex="0.2" height="48%">
         <Sidebar />
       </Box>
-      <Box marginLeft="1rem" border="1px solid black" flex=".8">
+      <Box marginLeft="1rem" border="1px solid rgba(220,220,220,.5)" flex=".8">
         <Heading
           marginTop="1rem"
           borderBottom="1px solid  #b99494"
@@ -107,15 +95,19 @@ const Expenses = () => {
         </Heading>
         <Box
           overflowY="scroll"
-         height="75vh"
+          height="75vh"
           padding="1rem"
           display="flex"
           flexWrap="wrap"
           gap="10px"
         >
-          {all?.length > 0 &&
-            all?.map((expense) => (
-              <Card height="15rem" key={expense.id}>
+          {allExpenses?.length > 0 ? (
+            allExpenses?.map((expense) => (
+              <Card
+                boxShadow=" rgba(0, 0, 0, 0.35) 0px 5px 15px;"
+                height="15rem"
+                key={expense.id}
+              >
                 <CardBody>
                   <Stack mt="6" spacing="3">
                     <Heading color="red.600" size="sm">
@@ -132,7 +124,17 @@ const Expenses = () => {
                 <CardFooter>
                   <ButtonGroup spacing="2">
                     <Button
-                      onClick={() => dispatch(moveToHistory(expense))}
+                      onClick={() => {
+                        
+                        toast('Moved to history',  {
+                          icon: '👏',
+                          style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                          },
+                        })
+                        dispatch(moveToHistory(expense))}}
                       variant="solid"
                       colorScheme="yellow"
                     >
@@ -146,7 +148,18 @@ const Expenses = () => {
                       Edit
                     </Button>
                     <Button
-                      onClick={() => dispatch(deleteExpense(expense))}
+                      onClick={() => {
+                        toast("Deleted successfully", {
+                          icon: "👏",
+                          style: {
+                            borderRadius: "10px",
+                            background: "#333",
+                            color: "#fff",
+                          },
+                        });
+
+                        dispatch(deleteExpense(expense));
+                      }}
                       variant="solid"
                       colorScheme="red"
                     >
@@ -155,7 +168,15 @@ const Expenses = () => {
                   </ButtonGroup>
                 </CardFooter>
               </Card>
-            ))}
+            ))
+          ) : (
+            <Box height="70vh" width="100%" display="grid" placeItems="center">
+              <Text textTransform="uppercase" fontWeight="bold" fontSize="2rem">
+                Currently No Expenses to show{" "}
+                <SmallCloseIcon color="red" fontSize="3rem" fontWeight="bold" />
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -205,6 +226,7 @@ const Expenses = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Toaster />
     </Box>
   );
 };
