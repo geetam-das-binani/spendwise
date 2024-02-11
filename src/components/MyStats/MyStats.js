@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+
 import {
   Box,
   HStack,
@@ -11,9 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import MyGoals from "./MyGoals";
-import { addGoal } from "../Reducers/goalsReducer";
+import { addGoal } from "../../Reducers/goalsReducer";
 import { v4 as uuidv4 } from "uuid";
 import toast, { Toaster } from "react-hot-toast";
+import Sidebar from "../Layout/Sidebar/Sidebar";
 const MyStats = () => {
   const { allExpenses, history } = useSelector((state) => state.expenses);
   const dispatch = useDispatch();

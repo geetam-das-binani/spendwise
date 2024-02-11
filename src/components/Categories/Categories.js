@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Layout/Sidebar/Sidebar";
 import { Box } from "@chakra-ui/react";
 import { Card, CardBody, Stack, Heading, Text } from "@chakra-ui/react";
 

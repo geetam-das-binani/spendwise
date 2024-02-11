@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+
 import {
   Box,
   Button,
@@ -28,10 +28,11 @@ import {
   deleteExpense,
   editExpense,
   moveToHistory,
-} from "../Reducers/expenseReducer";
-import { formattedDate } from "../utils/utils";
+} from "../../Reducers/expenseReducer";
+import { formattedDate } from "../../utils/utils";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import toast, { Toaster } from "react-hot-toast";
+import Sidebar from "../Layout/Sidebar/Sidebar";
 const Expenses = () => {
   const { allExpenses } = useSelector((state) => state.expenses);
   const dispatch = useDispatch();

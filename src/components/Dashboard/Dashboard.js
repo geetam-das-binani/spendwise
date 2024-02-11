@@ -1,9 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import Sidebar from "./Sidebar";
-import DailyExpenses from "./DailyExpenses";
-import History from "./History";
-import { Toaster } from "react-hot-toast";
+
+import DailyExpenses from "../Expenses/DailyExpenses";
+import History from "../History/History";
+import Sidebar from "../Layout/Sidebar/Sidebar";
+
 
 const Dashboard = () => {
   return (

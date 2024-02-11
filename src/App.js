@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import Categories from "./components/Categories";
-import Expenses from "./components/Expenses";
-import MyStats from "./components/MyStats";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Categories from "./components/Categories/Categories";
+import Expenses from "./components/Expenses/Expenses";
+import MyStats from "./components/MyStats/MyStats";
 import Navbar from "./components/Layout/Navbar/Navbar";
 import { useSelector } from "react-redux";
 

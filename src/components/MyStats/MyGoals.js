@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteGoal, editMyGoal } from "../Reducers/goalsReducer";
+import { deleteGoal, editMyGoal } from "../../Reducers/goalsReducer";
 import toast, { Toaster } from "react-hot-toast";
 const MyGoals = () => {
   const { goals } = useSelector((state) => state.goals);
